@@ -54,10 +54,16 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    //==============================================================================
+    void setSliderValue(int value);
 
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MidiLoggerAudioProcessor)
     // MidiLoggerProcessor *midiLoggerProcessor { new MidiLoggerProcessor() };
     MidiLoggerProcessor midiLoggerProcessor;
+    
+    juce::Atomic<int> sliderValue = 0;
+    juce::Atomic<bool> sliderValueChangedFlag = false;
 };

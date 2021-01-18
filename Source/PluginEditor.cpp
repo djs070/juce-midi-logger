@@ -13,9 +13,12 @@
 MidiLoggerAudioProcessorEditor::MidiLoggerAudioProcessorEditor (MidiLoggerAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
     setSize (400, 300);
+
+    addAndMakeVisible(slider);
+    slider.setRange(1.0, 500.0, 1.0);
+    slider.setTextValueSuffix(" Hz");
+    slider.addListener(this);
 }
 
 MidiLoggerAudioProcessorEditor::~MidiLoggerAudioProcessorEditor()
@@ -31,10 +34,14 @@ void MidiLoggerAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
     g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    slider.setBounds(10, 10, 380, 50);
 }
 
 void MidiLoggerAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+}
+
+void MidiLoggerAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
+{
+    audioProcessor.setSliderValue(slider->getValue());
 }

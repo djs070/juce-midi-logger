@@ -155,6 +155,13 @@ void MidiLoggerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
 
         // ..do something to the data...
     }
+    
+    if (sliderValueChangedFlag.get()) {
+        sliderValueChangedFlag = false;
+        auto message = juce::MidiMessage::controllerEvent(1, 64, sliderValue.get());
+        midiMessages.addEvent(message, 100);
+    }
+    
     midiLoggerProcessor.processMidi(midiMessages);
 }
 
@@ -188,4 +195,10 @@ void MidiLoggerAudioProcessor::setStateInformation (const void* data, int sizeIn
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new MidiLoggerAudioProcessor();
+}
+
+void MidiLoggerAudioProcessor::setSliderValue(int value)
+{
+    sliderValue.set(value);
+    sliderValueChangedFlag = true;
 }
